@@ -2,7 +2,7 @@
   "name": "react-admin",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://wagner-coldtag.github.io/Tracker",
+  "homepage": "https://wagner-coldtag.github.io/Fapergs",
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.10.4",
