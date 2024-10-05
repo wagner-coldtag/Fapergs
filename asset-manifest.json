@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/Fapergs/static/css/main.07a6e487.css",
-    "main.js": "/Fapergs/static/js/main.b829032c.js",
+    "main.js": "/Fapergs/static/js/main.fc24378a.js",
     "static/media/Logo.png": "/Fapergs/static/media/Logo.87cc951ce85834817def.png",
     "index.html": "/Fapergs/index.html",
     "main.07a6e487.css.map": "/Fapergs/static/css/main.07a6e487.css.map",
-    "main.b829032c.js.map": "/Fapergs/static/js/main.b829032c.js.map"
+    "main.fc24378a.js.map": "/Fapergs/static/js/main.fc24378a.js.map"
   },
   "entrypoints": [
     "static/css/main.07a6e487.css",
-    "static/js/main.b829032c.js"
+    "static/js/main.fc24378a.js"
   ]
 }
