@@ -5,11 +5,8 @@ import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import SignalWifi4BarIcon from '@mui/icons-material/SignalWifi4Bar';
-import Logo from './Logo.jpeg';
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
+import Logo from './Logo.png';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import FlashOnIcon from '@mui/icons-material/FlashOn';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -37,7 +34,6 @@ const Sidebar = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); // Check if the screen is small
 
   useEffect(() => {
-    // Set isCollapsed to true if the screen size is small
     setIsCollapsed(isSmallScreen);
   }, [isSmallScreen]); // Run this effect whenever isSmallScreen changes
 
@@ -95,7 +91,7 @@ const Sidebar = () => {
                 <img
                   alt="profile-user"
                   width="100px"
-                  height="60px"
+                  height="100px"
                   src={Logo}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
@@ -110,7 +106,7 @@ const Sidebar = () => {
                   Coldtag
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Sensor Administration
+                  Administração de sensores
                 </Typography>
               </Box>
             </Box>
@@ -118,41 +114,13 @@ const Sidebar = () => {
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
-              title="Dashboard"
+              title="Painel de Controle"
               to="/"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Charts
-            </Typography>
-            <Item
-              title="Line Chart"
-              to="/line"
-              icon={<TimelineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Voltage Analysis"
-              to="/voltage"
-              icon={<FlashOnIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="RSSI"
-              to="/RSSI"
-              icon={<SignalWifi4BarIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            {/* Other items can go here */}
+            
           </Box>
         </Menu>
       </ProSidebar>

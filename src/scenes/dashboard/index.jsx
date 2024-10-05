@@ -16,7 +16,6 @@ const Dashboard = () => {
   const colors = tokens(theme.palette.mode);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); // Check if the screen is small
 
-
   const [data, setData] = useState([]);
   const [devices, setDevices] = useState([]);
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -52,7 +51,6 @@ const Dashboard = () => {
               data: deviceData
                 .filter(item => item.timestamp && !isNaN(item.timestamp)) 
                 .map(item => {
-                  console.log(item.temperature); // Log the temperature value
                   return {
                     x: item.timestamp, // Keep the raw timestamp
                     y: item.temperature,
@@ -102,20 +100,7 @@ const Dashboard = () => {
   
     return date.toLocaleString();
   };
-  const downloadExcel = () => {
-    if (data.length === 0) return;
 
-    const worksheetData = data[0].data.map((item) => ({
-      Timestamp: formatTimestamp(item.x),
-      Temperature: item.y,
-    }));
-
-    const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "TemperatureData");
-
-    XLSX.writeFile(workbook, "temperature_report.xlsx");
-  };
 
   // Check the structure of data before accessing it
   const lastTemperature = data.length > 0 && data[0]?.data.length > 0
@@ -156,7 +141,7 @@ const Dashboard = () => {
       return (
         <Box m="20px">
           <Box height="400px">
-            <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+            <Header title="PAINEL DE CONTROLE" subtitle="Bem-vindo ao seu painel de controle" />
             <Box>
         {devices.map((device) => (
           <Button
@@ -169,6 +154,49 @@ const Dashboard = () => {
             Device {device}
           </Button>
         ))}
+        <Box
+        display="grid"
+        gridTemplateColumns="repeat(6, 1fr)"
+        gridAutoRows="60px"
+        gap="10px"
+        mt="10px"
+      >
+        {/* ROW 1 */}
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+         
+            <DeviceThermostatIcon
+              sx={{ color: temperatureColor, fontSize: "26px" }}
+            /> 
+            <Typography             variant="h4"
+            fontWeight="bold">
+              {lastTemperature} °C
+              </Typography>
+
+        </Box>
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+
+              <CoronavirusIcon
+                sx={{ color: microbialColor, fontSize: "26px" }}
+              />
+                          <Typography             variant="h4"
+            fontWeight="bold">
+              {lastMicrobialLoad} log(N)
+              </Typography>
+          
+        </Box>
+        </Box>
       </Box>
             <Chart isDashboard={true} data={data} />
           </Box>
@@ -180,22 +208,7 @@ const Dashboard = () => {
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-        <Box>
-        <Button
-            onClick={downloadExcel} // Add onClick event
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
+        <Header title="PAINEL DE CONTROLE" subtitle="Bem-vindo ao seu painel de controle" />
       </Box>
 
       {/* DEVICE BUTTONS */}
@@ -217,7 +230,7 @@ const Dashboard = () => {
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
+        gridAutoRows="120px"
         gap="20px"
         mt="20px"
       >
@@ -231,7 +244,7 @@ const Dashboard = () => {
         >
           <StatBox
             title={lastTemperature !== null ? `${lastTemperature}°C` : "No Data"}
-            subtitle="Current Temperature"
+            subtitle="Temperatura"
             progress={lastTemperature !== null ? (lastTemperature / 10).toFixed(2) : 0}
             increase={lastTemperature > 10 ? "High" : "Normal"}
             icon={
@@ -252,7 +265,7 @@ const Dashboard = () => {
         >
           <StatBox
             title={lastMicrobialLoad !== null ? `${lastMicrobialLoad}` : "No Data"}
-            subtitle="Current Load"
+            subtitle="Carga microbiana"
             progress={lastMicrobialLoad !== null ? (lastMicrobialLoad / 5).toFixed(2) : 0}
             increase={
               <Typography sx={{ color: microbialColor }}>
@@ -279,7 +292,7 @@ const Dashboard = () => {
         >
           <StatBox
             title={highTemperatureMeasurements}
-            subtitle="Notifications"
+            subtitle="Notificações"
             icon={
               <NotificationsActiveIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -297,7 +310,7 @@ const Dashboard = () => {
         >
           <StatBox
             title={timePassedString}
-            subtitle="Time passed"
+            subtitle="Tempo"
             icon={
               <AccessTimeIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -325,7 +338,7 @@ const Dashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Number of readings
+                Número de leituras
               </Typography>
               <Typography
                 variant="h3"
@@ -358,12 +371,12 @@ const Dashboard = () => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
+            borderBottom={`2px solid ${colors.primary[400]}`}
             colors={colors.grey[100]}
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Measurements
+              Medidas recentes
             </Typography>
           </Box>
           {data.length > 0 && data[0].data.length > 0 && data[0].data.slice(-10).map((measurement, i) => (
@@ -372,17 +385,10 @@ const Dashboard = () => {
               display="flex"
               justifyContent="space-between"
               alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
+              borderBottom={`3px solid ${colors.primary[400]}`}
+              p="10px"
             >
               <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {selectedDevice}
-                </Typography>
                 <Typography color={colors.grey[100]}>
                   {formatTimestamp(measurement.x)}
                 </Typography>

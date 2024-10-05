@@ -23,11 +23,11 @@ const Chart = ({ isCustomLineColors = false, isDashboard = false, data }) => {
 
   // Convert data to the format required by Recharts
   const transformedData = data[0]?.data.map((tempPoint, index) => {
-    const time = new Date(tempPoint.x * 1000).toISOString(); // Convert to ISO string
-    const temperature = typeof tempPoint.y === 'number' ? tempPoint.y : 0; // Ensure y is a number
-    const N = data[1]?.data[index]?.y || 0; // Get corresponding N value
-
-    return { time, temperature, N };
+    const unixTime = tempPoint.x * 1000; // Keep Unix timestamp in milliseconds
+    const Temperatura = typeof tempPoint.y === 'number' ? tempPoint.y.toFixed(1) : 0;
+    const N = data[1]?.data[index]?.y ? data[1].data[index].y.toFixed(1) : 0;
+  
+    return { unixTime, Temperatura, N };
   }) || [];
 
   // Calculate min and max for N axis
@@ -41,20 +41,23 @@ const Chart = ({ isCustomLineColors = false, isDashboard = false, data }) => {
 
   return (
     <ResponsiveContainer width="100%" height={280}>
-      <LineChart data={transformedData} margin={{ top: 40, right: 0, bottom: 50, left: 20 }}>
+      <LineChart data={transformedData} margin={{ top: 40, right: 0, bottom: 50, left: 0 }}>
         <CartesianGrid strokeDasharray="3 3" stroke={colors.grey[600]} />
         <XAxis 
-          dataKey="time" 
-          tickFormatter={(value) => new Date(value).toLocaleString()} 
+          dataKey="unixTime" 
+          tickFormatter={(value) => {
+            const date = new Date(value).toLocaleDateString(); // Format date
+            const time = new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Format time without seconds
+            return `${date}, ${time}`; // Combine date and time
+          }} 
           stroke={colors.grey[100]} 
           tick={{ fill: colors.grey[100] }} 
           axisLine={{ stroke: colors.grey[600] }}
         />
-        
-        {/* Primary Y-Axis for Temperature */}
+                {/* Primary Y-Axis for Temperature */}
         <YAxis 
           yAxisId="left" 
-          label={{ value: 'Temperature (°C)', angle: -90, fill: colors.grey[100], dx: -10 }} // Added dx for spacing
+          label={{ value: 'Temperatura (°C)', angle: -90, fill: colors.grey[100], dx: -10 }} // Added dx for spacing
           stroke={colors.grey[100]} 
           tick={{ fill: colors.grey[100] }} 
           axisLine={{ stroke: colors.grey[600] }}
@@ -64,17 +67,22 @@ const Chart = ({ isCustomLineColors = false, isDashboard = false, data }) => {
         <YAxis 
           yAxisId="right" 
           orientation="right" 
-          label={{ value: 'Predicted N', angle: -90, fill: colors.grey[100], dx: 10 }} // Added dx for spacing
+          label={{ value: 'N predito', angle: -90, fill: colors.grey[100], dx: 10 }} // Added dx for spacing
           stroke={colors.grey[100]} 
           tick={{ fill: colors.grey[100] }} 
           axisLine={{ stroke: colors.grey[600] }}
           domain={[nMin, nMax]} // Set domain dynamically
         />
         
-        <Tooltip 
-          contentStyle={{ backgroundColor: colors.primary[500], color: colors.grey[100] }} 
-          labelStyle={{ color: colors.grey[100] }} 
+        <Tooltip
+          contentStyle={{ backgroundColor: colors.primary[500], color: colors.grey[100] }}
+          labelStyle={{ color: colors.grey[100] }}
           itemStyle={{ color: colors.grey[100] }}
+          labelFormatter={(label) => {
+            const date = new Date(label).toLocaleDateString();
+            const time = new Date(label).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            return `${date}, ${time}`; // Combine date and time
+          }}
         />
         <Legend 
           wrapperStyle={{ color: colors.grey[100] }} 
@@ -86,7 +94,7 @@ const Chart = ({ isCustomLineColors = false, isDashboard = false, data }) => {
         <Line 
           yAxisId="left" 
           type="monotone" 
-          dataKey="temperature" 
+          dataKey="Temperatura" 
           stroke={colors.greenAccent[500]} 
           strokeWidth={2}
           dot={false} // Remove dots if desired
