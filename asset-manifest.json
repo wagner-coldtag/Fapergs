@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/Tracker/static/css/main.07a6e487.css",
+    "main.js": "/Tracker/static/js/main.65b4999e.js",
+    "static/media/Logo.png": "/Tracker/static/media/Logo.87cc951ce85834817def.png",
+    "index.html": "/Tracker/index.html",
+    "main.07a6e487.css.map": "/Tracker/static/css/main.07a6e487.css.map",
+    "main.65b4999e.js.map": "/Tracker/static/js/main.65b4999e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.07a6e487.css",
+    "static/js/main.65b4999e.js"
+  ]
+}
